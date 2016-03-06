@@ -6,12 +6,12 @@ require 'active_support/core_ext'
 
 DB = Sequel.sqlite('db/problems.db')
 
-require_relative 'model/platform'
-require_relative 'model/contest'
-require_relative 'model/problem'
+require_relative 'app/model/platform'
+require_relative 'app/model/contest'
+require_relative 'app/model/problem'
 
-require_relative 'fetch/codeforces'
-require_relative 'fetch/atcoder'
+require_relative 'app/fetch/codeforces'
+require_relative 'app/fetch/atcoder'
 
 # Codeforces.fetch_contests
 # Codeforces.fetch_problems
