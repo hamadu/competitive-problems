@@ -9,6 +9,7 @@ module AtCoder
     res = fetch_contest(raw_id)
     return false unless res
     raw_contest = parse_contest(res)
+    return false unless raw_contest
 
     p raw_contest
     return true
@@ -32,7 +33,6 @@ module AtCoder
     true
   end
 
-
   def self.fetch_contest(raw_id)
     domain = "#{raw_id}.contest.atcoder.jp"
     res = Net::HTTP.get_response(URI.parse("http://#{domain}/assignments"))
@@ -42,6 +42,8 @@ module AtCoder
 
   def self.parse_contest(response)
     html = Nokogiri::HTML(response.body)
+
+    return false if html.css('table tbody tr').count == 0
 
     {
       name: html.css('h1').inner_text.strip,
@@ -58,11 +60,26 @@ module AtCoder
     }
   end
 
+  def self.fetch_contests
+    contest_sets.each do |contests|
+      contests.each do |raw_id|
+        break unless process_contest(raw_id)
+        sleep(2)
+      end
+    end
+  end
+
   def self.fetch_regular_contests
-    1.upto(10).each do |num|
+    999.upto(999).each do |num|
       raw_id = format('arc%03d', num)
       break unless process_contest(raw_id)
       sleep(2)
+    end
+  end
+
+  def self.contest_sets
+    %w(arc abc atc).map do |type|
+      1.upto(5).map { |num| format('%s%03d', type, num) }
     end
   end
 end

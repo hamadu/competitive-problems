@@ -19,4 +19,4 @@ require_relative 'app/fetch/atcoder'
 # p Contest.count
 # p Problem.count
 
-AtCoder.fetch_regular_contests('arc')
+AtCoder.fetch_contests
